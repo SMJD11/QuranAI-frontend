@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran Search</title>
+    <style>
+        /* Add your CSS styling here */
+    </style>
+</head>
+<body>
+
+<div id="search-container">
+    <input type="text" id="search" placeholder="What do you want to search?">
+    <button onclick="search()">Search</button>
+</div>
+
+<div id="results-container"></div>
+
+<script>
+async function search() {
+    const query = document.getElementById('search').value;
+    
+    // Replace with actual API endpoint
+    const response = await fetch(`https://quranai-backend.onrender.com/search?query=${query}`);
+    
+    if (response.ok) {
+        const data = await response.json();
+        displayResults(data);
+    } else {
+        console.error('Search failed');
+    }
+}
+
+function displayResults(data) {
+   const resultsContainer = document.getElementById('results-container');
+   
+   data.forEach(item => {
+       const resultDiv = document.createElement('div');
+       
+       resultDiv.innerHTML = `
+           <p>${item.surahkey}</p>
+           <p>${item.surah_name_roman}</p>
+           <p>${item.ayah_ar}</p>
+           <p>${item.ayah_en}</p>`;
+           
+       resultsContainer.appendChild(resultDiv);
+   });
+}
+</script>
+
+</body>
+</html> 
