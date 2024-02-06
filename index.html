@@ -143,9 +143,9 @@
                 resultDiv.style.borderRadius = '4px';
                 resultDiv.style.color = 'white';
                 resultDiv.innerHTML = `
-            <h2 style="color: #F9A828;"><a href="https://quran.com/${item.surahkey}" target="_blank" style="color: #F9A828;">${item.surahkey}</a></h2>
+            <h2 style="color: #F9A828;"><a href="https://quran.com/${item.surahkey}/tafsirs/en-tafisr-ibn-kathir" target="_blank" style="color: #F9A828;">${item.surahkey}</a></h2>
             <h3>${item.surah_name_roman}</h3>
-            <p style="font-size: 20px; color: #F9A828;">${item.ayah_ar}</p>
+            <p style="font-size: 20px; color: #F9A828; text-align:right">${item.ayah_ar}</p>
             <p>${item.ayah_en}</p>`;
                 resultsContainer.appendChild(resultDiv);
             });
