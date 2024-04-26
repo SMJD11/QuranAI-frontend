@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Quran Search</title>
     <style>
         body {
@@ -34,7 +34,6 @@
             cursor: pointer
         }
 
-
         button:hover {
             background-color: #555
         }
@@ -42,14 +41,14 @@
         #results-container div {
             background-color: #333;
             padding: 10px;
-            margin-top: 5 px;
-            border-radius: 4 px;
+            margin-top: 5px;
+            border-radius: 4px;
         }
 
         h1 {
             text-align: center;
             color: white;
-            font-size: 48 px;
+            font-size: 48px;
         }
 
         #loading {
@@ -92,6 +91,69 @@
                 transform: rotate(360deg);
             }
         }
+
+        iframe {
+            position: fixed;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 100px);
+            border: none;
+            z-index: 999;
+            display: none;
+            animation: slide-down 0.5s ease-in-out;
+        }
+
+        @keyframes slide-down {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slide-up {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        #close-btn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: none;
+            animation: fade-in 0.5s ease-in-out;
+        }
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .arabic-text {
+            font-size: 28px;
+            text-align: right;
+        }
+
+        .english-text {
+            font-size: 18px;
+        }
     </style>
 </head>
 
@@ -107,6 +169,9 @@
     <div id="results-container"></div>
 
     <div id="loading"></div>
+
+    <iframe id="quran-frame"></iframe>
+    <button id="close-btn" onclick="closeFrame()">Close Tafsir</button>
 
     <script>
         async function search() {
@@ -143,14 +208,30 @@
                 resultDiv.style.borderRadius = '4px';
                 resultDiv.style.color = 'white';
                 resultDiv.innerHTML = `
-            <h2 style="color: #F9A828;"><a href="https://quran.com/${item.surahkey}/tafsirs/en-tafisr-ibn-kathir" target="_blank" style="color: #F9A828;">${item.surahkey}</a></h2>
+            <h2 style="color: white;"><span style="margin-right: 10px;">Tafsir</span><a href="#" onclick="openLink('https://quran.com/${item.surahkey}/tafsirs/en-tafisr-ibn-kathir')" style="color: white;">${item.surahkey}</a></h2>
             <h3>${item.surah_name_roman}</h3>
-            <p style="font-size: 20px; color: #F9A828; text-align:right">${item.ayah_ar}</p>
-            <p>${item.ayah_en}</p>`;
+            <p class="arabic-text">${item.ayah_ar}</p>
+            <p class="english-text">${item.ayah_en}</p>`;
                 resultsContainer.appendChild(resultDiv);
             });
         }
 
+        function openLink(url) {
+            const quranFrame = document.getElementById('quran-frame');
+            quranFrame.src = url;
+            quranFrame.style.display = 'block';
+            document.getElementById('close-btn').style.display = 'block';
+        }
+
+        function closeFrame() {
+            const quranFrame = document.getElementById('quran-frame');
+            quranFrame.style.animation = 'slide-up 0.5s ease-in-out forwards';
+            document.getElementById('close-btn').style.display = 'none';
+            setTimeout(() => {
+                quranFrame.style.display = 'none';
+                quranFrame.style.animation = 'slide-down 0.5s ease-in-out';
+            }, 500);
+        }
     </script>
 
 </body>
